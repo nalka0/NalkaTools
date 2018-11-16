@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Nalka.Tools.Unity
 {
@@ -59,10 +60,12 @@ namespace Nalka.Tools.Unity
         /// Destroys the given <see cref="Object"/> and fires related events
         /// </summary>
         /// <param name="DestroyedObject"><see cref="Object"/> to destroy</param>
-        public static void DestroyObject(DestroyedT DestroyedObject)
+        /// <param name="destroyerPath">This argument is automatically provided, please do not provide it</param>
+        public static void DestroyObject(DestroyedT DestroyedObject, [CallerFilePath] string destroyerPath = "")
         {
-            DestroyingObjectEventArgs<DestroyedT> DestroyingArgs = new DestroyingObjectEventArgs<DestroyedT>(DestroyedObject);
-            ObjectDestroyedEventArgs<DestroyedT> DestroyedArgs = new ObjectDestroyedEventArgs<DestroyedT>(DestroyedObject);
+            string destroyerName = destroyerPath.Remove(destroyerPath.Length - 3).Split('\\').Last();
+            DestroyingObjectEventArgs <DestroyedT> DestroyingArgs = new DestroyingObjectEventArgs<DestroyedT>(DestroyedObject, destroyerName);
+            ObjectDestroyedEventArgs<DestroyedT> DestroyedArgs = new ObjectDestroyedEventArgs<DestroyedT>(DestroyedObject, destroyerName);
             _destroyingObject?.Invoke(DestroyingArgs);
             if (!DestroyingArgs.Cancel)
             {
@@ -83,8 +86,12 @@ namespace Nalka.Tools.Unity
         /// The <see cref="Object"/> being destroyed
         /// </summary>
         public DestroyedT DestroyedObject;
+        /// <summary>
+        /// Name of the file that destroyed the <see cref="Object"/>
+        /// </summary>
+        public string DestroyingFileName;
         
-        protected internal ObjectDestrcutionEventArgsBase(DestroyedT Obj)
+        protected internal ObjectDestrcutionEventArgsBase(DestroyedT Obj, string destroyingFileName)
         {
             DestroyedObject = Obj;
         }
@@ -93,11 +100,11 @@ namespace Nalka.Tools.Unity
     /// <summary>
     /// Provides event data for <see cref="EncapsulerDestruction{DestroyedT}.DestroyingObject"/>
     /// </summary>
-    /// <typeparam name="T">Type of the destroyed <see cref="Object"/></typeparam>
-    public class ObjectDestroyedEventArgs<T> : ObjectDestrcutionEventArgsBase<T> where T : Object
+    /// <typeparam name="DestroyedT">Type of the destroyed <see cref="Object"/></typeparam>
+    public class ObjectDestroyedEventArgs<DestroyedT> : ObjectDestrcutionEventArgsBase<DestroyedT> where DestroyedT : Object
     {
         //Tout ce qui est spécifique à Destroyed
-        internal ObjectDestroyedEventArgs(T destroyedObject) : base(destroyedObject)
+        internal ObjectDestroyedEventArgs(DestroyedT destroyedObject, string destroyingFileName) : base(destroyedObject, destroyingFileName)
         {
 
         }
@@ -116,12 +123,12 @@ namespace Nalka.Tools.Unity
         /// </summary>
         public bool Cancel = false;
 
-        internal DestroyingObjectEventArgs(DestroyingT destroyedObject) : base(destroyedObject)
+        internal DestroyingObjectEventArgs(DestroyingT destroyedObject, string destroyingFileName) : base(destroyedObject, destroyingFileName)
         {
 
         }
     }
 
-    public delegate void ObjectDestroyedEventHandler<T>(ObjectDestroyedEventArgs<T> e) where T : Object;
-    public delegate void ObjectDestroyingEventHandler<T>(DestroyingObjectEventArgs<T> e) where T : Object;
+    public delegate void ObjectDestroyedEventHandler<DestroyedT>(ObjectDestroyedEventArgs<DestroyedT> e) where DestroyedT : Object;
+    public delegate void ObjectDestroyingEventHandler<DestroyedT>(DestroyingObjectEventArgs<DestroyedT> e) where DestroyedT : Object;
 }
