@@ -4,29 +4,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class test : MonoBehaviour
+public class Test : MonoBehaviour
 {
     private void Start()
     {
-        EncapsulerDestruction<GameObject>.ObjectDestroyed += EncapsulerDestruction_ObjectDestroyed;
-        EncapsulerDestruction<GameObject>.DestroyingObject += EncapsulerDestruction_ObjectDestroying;
+        Destroyer<GameObject>.ObjectDestroyed += EncapsulerDestruction_ObjectDestroyed;
+        Destroyer<GameObject>.DestroyingObject += EncapsulerDestruction_DestroyingObject;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            EncapsulerDestruction<GameObject>.DestroyObject(gameObject);
+            Destroyer<GameObject>.Destroy(gameObject);
         }
     }
 
     private void EncapsulerDestruction_ObjectDestroyed(ObjectDestroyedEventArgs<GameObject> e)
     {
-        Debug.Log($"Destroyed {e.DestroyedObject.name}");
+        Debug.Log($"{e.DestroyingFileName} destroyed {e.DestroyedObject.name}");
     }
 
-    private void EncapsulerDestruction_ObjectDestroying(DestroyingObjectEventArgs<GameObject> e)
+    private void EncapsulerDestruction_DestroyingObject(DestroyingObjectEventArgs<GameObject> e)
     {
-        Debug.Log($"Destroyed {e.DestroyedObject.name}");
+        Debug.Log($"{e.DestroyingFileName} destroying {e.DestroyedObject.name}");
     }
 }
