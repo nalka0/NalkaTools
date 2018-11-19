@@ -52,6 +52,7 @@ namespace Nalka.Tools.Unity
         /// <param name="destroyerPath">This argument is automatically provided, please do not provide it</param>
         public static void Destroy<DestroyedT>(DestroyedT DestroyedObject, [CallerFilePath] string destroyerPath = "") where DestroyedT : Object
         {
+            Debug.Log($"{typeof(DestroyedT).Name}");
             string destroyerName = destroyerPath.Remove(destroyerPath.Length - 3).Split('\\').Last();
             DestroyingObjectEventArgs<DestroyedT> DestroyingArgs = new DestroyingObjectEventArgs<DestroyedT>(DestroyedObject, destroyerName);
             ObjectDestroyedEventArgs<DestroyedT> DestroyedArgs = new ObjectDestroyedEventArgs<DestroyedT>(DestroyedObject, destroyerName);
@@ -69,20 +70,18 @@ namespace Nalka.Tools.Unity
         {
             DestroyingObject += (e) =>
             {
+                Debug.Log($"{typeof(U).Name} inherits {e.GetType().GenericTypeArguments[0].Name} = {typeof(U).Inherits(e.GetType().GenericTypeArguments[0])}");
                 if (typeof(U).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(U) == e.GetType().GenericTypeArguments[0])
                 {
-                    handler(e as DestroyingObjectEventArgs<U>);
+                    try
+                    {
+                        handler((DestroyingObjectEventArgs<U>)e);
+                    }
+                    catch (System.Exception)
+                    { }
                 }
             };
         }
-
-        //private static void TryRaise<U>(DestroyingObjectEventArgs<Object> e, System.Action<DestroyingObjectEventArgs<U>> handler) where U : Object
-        //{
-        //    if (typeof(U).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(U) == e.GetType().GenericTypeArguments[0])
-        //    {
-        //        handler(e as DestroyingObjectEventArgs<U>);
-        //    }
-        //}
 
         public static void AddHandler<U>(System.Action<ObjectDestroyedEventArgs<U>> handler) where U : Object
         {
@@ -96,6 +95,7 @@ namespace Nalka.Tools.Unity
         }
         #endregion
     }
+
     /// <summary>
     /// Provides event data for all <see cref="Object"/> destructions
     /// </summary>
@@ -120,7 +120,7 @@ namespace Nalka.Tools.Unity
     }
 
     /// <summary>
-    /// Provides event data for <see cref="Destroyer{DestroyedT}.DestroyingObject"/>
+    /// Provides event data for <see cref="Destroyer{DestroyedT}.ObjectDestroyed"/>
     /// </summary>
     /// <typeparam name="DestroyedT">Type of the destroyed <see cref="Object"/></typeparam>
     public sealed class ObjectDestroyedEventArgs<DestroyedT> : ObjectDestrcutionEventArgsBase<DestroyedT> where DestroyedT : Object
@@ -145,20 +145,41 @@ namespace Nalka.Tools.Unity
     {
         //Tout ce qui est spécifique à Destroying se trouve ici
 
+        private RefNeeded trick;
+
         /// <summary>
         /// Determines if the <see cref="Object"/>'s destruction has to be cancelled
         /// </summary>
-        public bool Cancel { get; set; } = false;
+        public bool Cancel
+        {
+            get { return trick.RefCancel; }
+            set { trick.RefCancel = value; }
+        }
+
+        private DestroyingObjectEventArgs(DestroyingT destroyedObject, string destroyingFileName, RefNeeded refNeeded) : this(destroyedObject, destroyingFileName)
+        {
+            trick = refNeeded;
+        }
 
         internal DestroyingObjectEventArgs(DestroyingT destroyedObject, string destroyingFileName) : base(destroyedObject, destroyingFileName)
         {
+            trick = new RefNeeded();
+        }
 
+        public static explicit operator DestroyingObjectEventArgs<DestroyingT>(DestroyingObjectEventArgs<Object> e)
+        {
+            return new DestroyingObjectEventArgs<DestroyingT>((DestroyingT)e.DestroyedObject, e.DestroyingFileName, e.trick);
         }
 
         public static explicit operator DestroyingObjectEventArgs<Object>(DestroyingObjectEventArgs<DestroyingT> e)
         {
-            return new DestroyingObjectEventArgs<Object>(e.DestroyedObject, e.DestroyingFileName);
+            return new DestroyingObjectEventArgs<Object>(e.DestroyedObject, e.DestroyingFileName, e.trick);
         }
+    }
+
+    internal class RefNeeded
+    {
+        public bool RefCancel { get; set; } = false;
     }
 
     public delegate void ObjectDestroyedEventHandler(ObjectDestroyedEventArgs<Object> e);

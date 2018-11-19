@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.Debug;
 
 public class Test : MonoBehaviour
 {
     private void Start()
     {
-        Destroyer.AddHandler<Object>(Destroyer_ObjectDestroyed);
-        Destroyer.AddHandler<Object>(Destroyer_DestroyingObject);
-        Destroyer.AddHandler<Object>(Destroyer_DestroyingObject);
+        //Destroyer.AddHandler<GameObject>(Destroyer_ObjectDestroyed);
+        Destroyer.AddHandler<Behaviour>(Destroyer_DestroyingObject);
         Instantiater<GameObject>.CreatingObject += Instantiater_CreatingObject;
         Instantiater<GameObject>.ObjectCreated += Instantiater_ObjectCreated;
     }
@@ -23,27 +23,27 @@ public class Test : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Destroyer.Destroy(gameObject);
+            Destroyer.Destroy<Component>(this);
         }
     }
 
     private void Instantiater_ObjectCreated(ObjectCreatedEventArgs<GameObject> e)
     {
-        Debug.Log($"{e.CreatingFileName} created {e.CreatedObject.name}");
+        Log($"{e.CreatingFileName} created {e.CreatedObject.name}");
     }
 
     private void Instantiater_CreatingObject(CreatingObjectEventArgs<GameObject> e)
     {
-        Debug.Log($"{e.CreatingFileName} creating {e.CreatedObject.name}");
+        Log($"{e.CreatingFileName} creating {e.CreatedObject.name}");
     }
 
-    private void Destroyer_ObjectDestroyed(ObjectDestroyedEventArgs<Object> e)
+    private void Destroyer_ObjectDestroyed(ObjectDestroyedEventArgs<GameObject> e)
     {
-        Debug.Log($"{e.DestroyingFileName} destroyed {e.DestroyedObject.name}");
+        Log($"{e.DestroyingFileName} destroyed {e.DestroyedObject.name}");
     }
 
-    private void Destroyer_DestroyingObject(DestroyingObjectEventArgs<Object> e)
+    private void Destroyer_DestroyingObject(DestroyingObjectEventArgs<Behaviour> e)
     {
-        Debug.Log($"{e.DestroyingFileName} destroying {e.DestroyedObject.name}");
+        Log($"{e.DestroyingFileName} destroying {e.DestroyedObject.name}");
     }
 }
