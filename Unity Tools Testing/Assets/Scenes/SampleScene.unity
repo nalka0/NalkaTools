@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -191,7 +191,6 @@ GameObject:
   - component: {fileID: 339199141}
   - component: {fileID: 339199140}
   - component: {fileID: 339199144}
-  - component: {fileID: 339199145}
   m_Layer: 0
   m_Name: Destroy him
   m_TagString: Player
@@ -275,17 +274,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 022ea7ed233bfa3459b756a688787858, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &339199145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 339199139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efb9c03931cbdac4bb85cc65c4f9bfbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &534669902

@@ -24,7 +24,8 @@ namespace Nalka.Tools.Extensions
             //return other == null || first == null ? false : first.BaseType == other ? true : first.BaseType != null ? first.BaseType.Inherits(other) : false;
         }
     }
-        
+
+    [Obsolete("pas fait", true)]
     public static class GenericExtensions
     {
         public static bool MemberwiseEquals<T>(this T first, T other) where T : class
@@ -33,7 +34,6 @@ namespace Nalka.Tools.Extensions
             {
                 if (member is ConstructorInfo || member is MethodInfo)
                     continue;
-                Debug.Log($"{member.Name}");
             }
             return true;
         }
