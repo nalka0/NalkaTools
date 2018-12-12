@@ -9,6 +9,12 @@ namespace Nalka.Tools.Extensions
 {
     public static class TypeExtensions
     {
+        /// <summary>
+        /// Determines if <paramref name="first"/> inherits from <paramref name="other"/>
+        /// </summary>
+        /// <param name="first">The first <see cref="Type"/> to compare</param>
+        /// <param name="other">The other <see cref="Type"/> to compare</param>
+        /// <returns></returns>
         public static bool Inherits(this Type first, Type other)
         {
             if (other == null || first == null)
@@ -25,9 +31,9 @@ namespace Nalka.Tools.Extensions
         }
     }
 
-    [Obsolete("pas fait", true)]
-    public static class GenericExtensions
+    public static class ClassesExtensions
     {
+        [Obsolete("pas fait", true)]
         public static bool MemberwiseEquals<T>(this T first, T other) where T : class
         {
             foreach (MemberInfo member in first.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))

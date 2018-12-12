@@ -3,7 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using UnityEngine;
-
+using System.Collections.Generic;
 
 namespace Nalka.Tools.Unity
 {
@@ -15,31 +15,6 @@ namespace Nalka.Tools.Unity
         #region Fields
         private static event InstantiatingObjectEventHandler _instantiatingObject;
         private static event ObjectInstantiatedEventHandler _objectInstantiated;
-        #endregion
-
-        #region Events
-        private static event InstantiatingObjectEventHandler InstantiatingObject
-        {
-            add
-            {
-                if (AllowsMultipleEqualHandler || _instantiatingObject == null || !_instantiatingObject.GetInvocationList().Any(element => element.Method == value.Method))
-                {
-                    _instantiatingObject += value;
-                }
-            }
-            remove { _instantiatingObject -= value; }
-        }
-        private static event ObjectInstantiatedEventHandler ObjectInstantiated
-        {
-            add
-            {
-                if (AllowsMultipleEqualHandler || _objectInstantiated == null || !_objectInstantiated.GetInvocationList().Any(element => element.Method == value.Method))
-                {
-                    _objectInstantiated += value;
-                }
-            }
-            remove { _objectInstantiated -= value; }
-        }
         #endregion
 
         #region Properties
@@ -173,40 +148,51 @@ namespace Nalka.Tools.Unity
         /// <summary>
         /// Handlers added here will be invoked when before the <see cref="Object"/>'s instantiation
         /// </summary>
-        public static class Instantiating
+        public static class Instantiating<InstantiatedType> where InstantiatedType : Object
         {
-            public static void AddHandler<U>(System.Action<InstiatingObjectEventArgs<U>> handler) where U : Object
+            private static List<System.Action<InstiatingObjectEventArgs<InstantiatedType>>> AddedMethods = new List<System.Action<InstiatingObjectEventArgs<InstantiatedType>>>();
+            public static void AddHandler(System.Action<InstiatingObjectEventArgs<InstantiatedType>> method)
             {
-                InstantiatingObject += (e) =>
+                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method))
                 {
-                    if (typeof(U).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(U) == e.GetType().GenericTypeArguments[0])
+                    _instantiatingObject += (e) =>
                     {
-                        handler((InstiatingObjectEventArgs<U>)e);
-                    }
-                };
+                        if (typeof(InstantiatedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(InstantiatedType) == e.GetType().GenericTypeArguments[0])
+                        {
+                            method((InstiatingObjectEventArgs<InstantiatedType>)e);
+                        }
+                    };
+                }
             }
 
             [System.Obsolete("Not implemented", true)]
             public static void Clear()
             {
-
+                AddedMethods.Clear();
+                _instantiatingObject = null;
             }
         }
         
         /// <summary>
         /// Handlers added here will be invoked when after the <see cref="Object"/>'s instantiation
         /// </summary>
-        public static class Instantiated
+        public static class Instantiated<InstantiatedType> where InstantiatedType : Object
         {
-            public static void AddHandler<U>(System.Action<ObjectInstiatedEventArgs<U>> handler) where U : Object
+
+            private static List<System.Action<ObjectInstiatedEventArgs<InstantiatedType>>> AddedMethods = new List<System.Action<ObjectInstiatedEventArgs<InstantiatedType>>>();
+            public static void AddHandler(System.Action<ObjectInstiatedEventArgs<InstantiatedType>> method) 
             {
-                ObjectInstantiated += (e) =>
+                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method))
                 {
-                    if (typeof(U).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(U) == e.GetType().GenericTypeArguments[0])
+                    AddedMethods.Add(method);
+                    _objectInstantiated += (e) =>
                     {
-                        handler((ObjectInstiatedEventArgs<U>)e);
-                    }
-                };
+                        if (typeof(InstantiatedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(InstantiatedType) == e.GetType().GenericTypeArguments[0])
+                        {
+                            method((ObjectInstiatedEventArgs<InstantiatedType>)e);
+                        }
+                    };
+                }
             }
 
             [System.Obsolete("Not implemented", true)]
@@ -218,5 +204,3 @@ namespace Nalka.Tools.Unity
         #endregion
     }
 }
-
-//public static T Instantiate<T>(T original, Vector3 position, Quaternion rotation, Transform parent) where T : Object;

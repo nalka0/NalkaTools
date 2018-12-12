@@ -1,8 +1,9 @@
 ﻿using Nalka.Tools.Extensions;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Nalka.Tools.Unity
 {
@@ -14,32 +15,6 @@ namespace Nalka.Tools.Unity
         #region Fields
         private static event DestroyingObjectEventHandler _destroyingObject;
         private static event ObjectDestroyedEventHandler _objectDestroyed;
-        #endregion
-
-        #region Events
-        private static event DestroyingObjectEventHandler DestroyingObject
-        {
-            add
-            {
-                if (AllowsMultipleEqualHandler || _destroyingObject == null || !_destroyingObject.GetInvocationList().Any(element => element.Method == value.Method))
-                {
-                    _destroyingObject += value;
-                }
-            }
-            remove { _destroyingObject -= value; }
-        }
-
-        private static event ObjectDestroyedEventHandler ObjectDestroyed
-        {
-            add
-            {
-                if (AllowsMultipleEqualHandler || _objectDestroyed == null || !_objectDestroyed.GetInvocationList().Any(element => element.Method == value.Method))
-                {
-                    _objectDestroyed += value;
-                }
-            }
-            remove { _objectDestroyed -= value; }
-        }
         #endregion
 
         #region Properties
@@ -56,7 +31,7 @@ namespace Nalka.Tools.Unity
         /// <param name="DestroyedObject"><see cref="Object"/> to destroy</param>
         /// <param name="msDelay">The number of milliseconds to wait before destroying the given <see cref="Object"/></param>
         /// <param name="destroyerPath">This argument is automatically provided, please do not provide it</param>
-        public async static void Destroy<DestroyedT>(DestroyedT DestroyedObject, int msDelay = 0, [CallerFilePath] string destroyerPath = "") where DestroyedT : Object
+        public static async void Destroy<DestroyedT>(DestroyedT DestroyedObject, int msDelay = 0, [CallerFilePath] string destroyerPath = "") where DestroyedT : Object
         {
             string destroyerName = destroyerPath.Remove(destroyerPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
@@ -79,14 +54,14 @@ namespace Nalka.Tools.Unity
         /// <param name="DestroyedObject"><see cref="Object"/> to destroy</param>
         /// <param name="msDelay">The number of milliseconds to wait before destroying the given <see cref="Object"/></param>
         /// <param name="destroyerPath">This argument is automatically provided, please do not provide it</param>
-        public async static void DestroyImmediate<DestroyedT>(DestroyedT DestroyedObject, int msDelay = 0, [CallerFilePath] string destroyerPath = "") where DestroyedT : Object
+        public static async void DestroyImmediate<DestroyedT>(DestroyedT DestroyedObject, int msDelay = 0, [CallerFilePath] string destroyerPath = "") where DestroyedT : Object
         {
             string destroyerName = destroyerPath.Remove(destroyerPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
             DestroyingObjectEventArgs<DestroyedT> DestroyingArgs = new DestroyingObjectEventArgs<DestroyedT>(DestroyedObject, destroyerName);
-            ObjectDestroyedEventArgs<DestroyedT> DestroyedArgs = new ObjectDestroyedEventArgs<DestroyedT>(DestroyedObject, destroyerName);
+            ObjectDestroyedEventArgs<DestroyedT> DestroyedArgs = new ObjectDestroyedEventArgs<DestroyedT>(DestroyedObject, destroyerName);//might be useless
             DestroyingObjectEventArgs<Object> SentDestroyingArgs = (DestroyingObjectEventArgs<Object>)DestroyingArgs;
-            ObjectDestroyedEventArgs<Object> SentDestroyedArgs = (ObjectDestroyedEventArgs<Object>)DestroyedArgs;
+            ObjectDestroyedEventArgs<Object> SentDestroyedArgs = (ObjectDestroyedEventArgs<Object>)DestroyedArgs;//might be useless
             _destroyingObject?.Invoke(SentDestroyingArgs);
             if (!SentDestroyingArgs.Cancel)
             {
@@ -99,17 +74,22 @@ namespace Nalka.Tools.Unity
         /// <summary>
         /// Handlers added here will be invoked when before the <see cref="Object"/>'s destruction
         /// </summary>
-        public static class Destroying
+        public static class Destroying<DestroyedType> where DestroyedType : Object
         {
-            public static void AddHandler<U>(System.Action<DestroyingObjectEventArgs<U>> handler) where U : Object
+            private static List<System.Action<DestroyingObjectEventArgs<DestroyedType>>> AddedMethods = new List<System.Action<DestroyingObjectEventArgs<DestroyedType>>>();
+            public static void AddHandler(System.Action<DestroyingObjectEventArgs<DestroyedType>> method)
             {
-                DestroyingObject += (e) =>
+                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method))
                 {
-                    if (typeof(U).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(U) == e.GetType().GenericTypeArguments[0])
+                    AddedMethods.Add(method);
+                    _destroyingObject += (e) =>
                     {
-                        handler((DestroyingObjectEventArgs<U>)e);
-                    }
-                };
+                        if (typeof(DestroyedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(DestroyedType) == e.GetType().GenericTypeArguments[0])
+                        {
+                            method((DestroyingObjectEventArgs<DestroyedType>)e);
+                        }
+                    };
+                }
             }
 
             [System.Obsolete("Not implemented", true)]
@@ -122,17 +102,22 @@ namespace Nalka.Tools.Unity
         /// <summary>
         /// Handlers added here will be invoked when after the <see cref="Object"/>'s destruction
         /// </summary>
-        public static class Destroyed
+        public static class Destroyed<DestroyedType> where DestroyedType : Object
         {
-            public static void AddHandler<U>(System.Action<ObjectDestroyedEventArgs<U>> handler) where U : Object
+            private static List<System.Action<ObjectDestroyedEventArgs<DestroyedType>>> AddedMethods = new List<System.Action<ObjectDestroyedEventArgs<DestroyedType>>>();
+            public static void AddHandler(System.Action<ObjectDestroyedEventArgs<DestroyedType>> method)
             {
-                ObjectDestroyed += (e) =>
+                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method))
                 {
-                    if (typeof(U).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(U) == e.GetType().GenericTypeArguments[0])
+                    AddedMethods.Add(method);
+                    _objectDestroyed += (e) =>
                     {
-                        handler((ObjectDestroyedEventArgs<U>)e);
-                    }
-                };
+                        if (typeof(DestroyedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(DestroyedType) == e.GetType().GenericTypeArguments[0])
+                        {
+                            method((ObjectDestroyedEventArgs<DestroyedType>)e);
+                        }
+                    };
+                }
             }
 
             [System.Obsolete("Not implemented", true)]

@@ -3,8 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using System.Threading.Tasks;
+using UnityEngine;
 using static System.Diagnostics.Debug;
 
 public class Test : MonoBehaviour
@@ -12,15 +12,27 @@ public class Test : MonoBehaviour
     public string Temp = "Je teste des components avec destroy immedaite";
     private void Start()
     {
-        Destroyer.Destroyed.AddHandler<GameObject>(e => { Debug.Log($"salut"); Task.Delay(5000).GetAwaiter().GetResult(); Debug.Log($"{e.DestroyedObject.GetComponent<Test>().Temp}"); });
+        Instantiater.Instantiating<GameObject>.AddHandler(OtherTestMethod);
+        //Destroyer.Destroyed<GameObject>.AddHandler(TestMethod);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            //exception
-            Destroyer.Destroy(gameObject);
+            Instantiater.Instantiate(gameObject);
         }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+
+        }
+    }
+    private void OtherTestMethod(InstiatingObjectEventArgs<GameObject> e)
+    {
+        Debug.Log($"salut");
+    }
+    private void TestMethod(ObjectDestroyedEventArgs<GameObject> e)
+    {
+        Debug.Log($"{e.DestroyedObject.name}");
     }
 }
