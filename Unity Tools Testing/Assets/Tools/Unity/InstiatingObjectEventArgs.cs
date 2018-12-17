@@ -8,7 +8,7 @@ namespace Nalka.Tools.Unity
     /// 
     /// </summary>
     /// <typeparam name="InstantiatingT">Type of the instantiated <see cref="Object"/></typeparam>
-    public class InstiatingObjectEventArgs<InstantiatingT> : InstiationEventArgsBase<InstantiatingT> where InstantiatingT : Object
+    public class InstantiatingObjectEventArgs<InstantiatingT> : InstiationEventArgsBase<InstantiatingT> where InstantiatingT : Object
     {
         private RefNeeded trick;
 
@@ -21,20 +21,20 @@ namespace Nalka.Tools.Unity
             set { trick.RefCancel = value; }
         }
 
-        private InstiatingObjectEventArgs(InstantiatingT instantiatingObject, string instantiatingFileName, RefNeeded refNeeded) : this(instantiatingObject, instantiatingFileName)
+        private InstantiatingObjectEventArgs(InstantiatingT instantiatingObject, string instantiatingFileName, RefNeeded refNeeded) : this(instantiatingObject, instantiatingFileName)
         {
             trick = refNeeded;
         }
 
-        internal InstiatingObjectEventArgs(InstantiatingT instantiatedObject, string instantiatingFileName) : base(instantiatedObject, instantiatingFileName)
+        internal InstantiatingObjectEventArgs(InstantiatingT instantiatedObject, string instantiatingFileName) : base(instantiatedObject, instantiatingFileName)
         {
             trick = new RefNeeded();
         }
 
-        public static explicit operator InstiatingObjectEventArgs<InstantiatingT>(InstiatingObjectEventArgs<Object> e) => new InstiatingObjectEventArgs<InstantiatingT>((InstantiatingT)e.InstantiatedObject, e.InstantiatingFileName, e.trick);
+        public static explicit operator InstantiatingObjectEventArgs<InstantiatingT>(InstantiatingObjectEventArgs<Object> e) => new InstantiatingObjectEventArgs<InstantiatingT>((InstantiatingT)e.InstantiatedObject, e.InstantiatingFileName, e.trick);
 
-        public static explicit operator InstiatingObjectEventArgs<Object>(InstiatingObjectEventArgs<InstantiatingT> e) => new InstiatingObjectEventArgs<Object>(e.InstantiatedObject, e.InstantiatingFileName, e.trick);
+        public static explicit operator InstantiatingObjectEventArgs<Object>(InstantiatingObjectEventArgs<InstantiatingT> e) => new InstantiatingObjectEventArgs<Object>(e.InstantiatedObject, e.InstantiatingFileName, e.trick);
     }
 
-    public delegate void InstantiatingObjectEventHandler(InstiatingObjectEventArgs<Object> e);
+    public delegate void InstantiatingObjectEventHandler(InstantiatingObjectEventArgs<Object> e);
 }

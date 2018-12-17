@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using Nalka.Tools.Unity;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using UnityEngine;
+using UnityObject = UnityEngine.Object;
 
 namespace Nalka.Tools.Extensions
 {
@@ -33,7 +32,7 @@ namespace Nalka.Tools.Extensions
 
     public static class ClassesExtensions
     {
-        [Obsolete("pas fait", true)]
+        [Obsolete("Not ready", true)]
         public static bool MemberwiseEquals<T>(this T first, T other) where T : class
         {
             foreach (MemberInfo member in first.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
@@ -43,5 +42,22 @@ namespace Nalka.Tools.Extensions
             }
             return true;
         }
+    }
+
+    public static class TimeSpanExtensions
+    {
+        /// <summary>
+        /// Returns the number of weeks (7 days periods) in the given <see cref="TimeSpan"/>
+        /// </summary>
+        /// <param name="timeSpan"><see cref="TimeSpan"/> to get the week count of</param>
+        /// <returns>The number of weeks (7 days periods) in the given <see cref="TimeSpan"/></returns>
+        public static double GetTotalWeeks(this TimeSpan timeSpan) => timeSpan.TotalDays / 7;
+
+        /// <summary>
+        /// Returns the number of Years (365.25 days periods) in the given <see cref="TimeSpan"/>
+        /// </summary>
+        /// <param name="timeSpan"><see cref="TimeSpan"/> to get the years count of</param>
+        /// <returns>Returns the number of Years (365.25 days periods) in the given <see cref="TimeSpan"/></returns>
+        public static double GetTotalYears(this TimeSpan timeSpan) => timeSpan.TotalDays / 365.25;
     }
 }

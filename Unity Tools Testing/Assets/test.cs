@@ -5,34 +5,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using static System.Diagnostics.Debug;
 
 public class Test : MonoBehaviour
 {
-    public string Temp = "Je teste des components avec destroy immedaite";
+    [Obsolete] public string Temp = "Je teste des components avec destroy immedaite";
     private void Start()
     {
-        Instantiater.Instantiating<GameObject>.AddHandler(OtherTestMethod);
-        //Destroyer.Destroyed<GameObject>.AddHandler(TestMethod);
+        Destroyer.AllowsMultipleEqualHandler = false;
+        Destroyer.Destroyed.AddHandler<GameObject>(OtherTestMethod);
+        Destroyer.Destroyed.AddHandler<GameObject>(OtherTestMethod);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Instantiater.Instantiate(gameObject);
+            Destroyer.Destroy(gameObject);
         }
         else if (Input.GetKeyDown(KeyCode.B))
         {
-
+            Instantiater.Test();
         }
     }
-    private void OtherTestMethod(InstiatingObjectEventArgs<GameObject> e)
-    {
-        Debug.Log($"salut");
-    }
-    private void TestMethod(ObjectDestroyedEventArgs<GameObject> e)
-    {
-        Debug.Log($"{e.DestroyedObject.name}");
-    }
+    private void OtherTestMethod(ObjectDestroyedEventArgs<GameObject> e) => Debug.Log($"{e.DestroyedObject.name}");
 }

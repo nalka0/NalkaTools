@@ -1,11 +1,13 @@
 ﻿using Nalka.Tools.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
-using System;
+
 namespace Nalka.Tools.Unity
 {
     /// <summary>
@@ -75,14 +77,14 @@ namespace Nalka.Tools.Unity
         /// <summary>
         /// Handlers added here will be invoked when before the <see cref="UnityEngine.Object"/>'s destruction
         /// </summary>
-        public static class Destroying<DestroyedType> where DestroyedType : UnityObject
+        public static class Destroying
         {
-            private static List<Action<DestroyingObjectEventArgs<DestroyedType>>> AddedMethods = new List<Action<DestroyingObjectEventArgs<DestroyedType>>>();
-            public static void AddHandler(Action<DestroyingObjectEventArgs<DestroyedType>> method)
+            private static List<MethodInfo> AddedMethods = new List<MethodInfo>();
+            public static void AddHandler<DestroyedType>(Action<DestroyingObjectEventArgs<DestroyedType>> method) where DestroyedType : UnityObject
             {
-                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method))
+                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method.Method))
                 {
-                    AddedMethods.Add(method);
+                    AddedMethods.Add(method.Method);
                     _destroyingObject += (e) =>
                     {
                         if (typeof(DestroyedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(DestroyedType) == e.GetType().GenericTypeArguments[0])
@@ -94,23 +96,24 @@ namespace Nalka.Tools.Unity
             }
 
             [Obsolete("Not implemented", true)]
-            public static void RemoveHandler(Action<DestroyingObjectEventArgs<DestroyedType>> method)
+            public static void Clear()
             {
-
+                _destroyingObject = null;
+                AddedMethods.Clear();
             }
         }
 
         /// <summary>
         /// Handlers added here will be invoked when after the <see cref="UnityEngine.Object"/>'s destruction
         /// </summary>
-        public static class Destroyed<DestroyedType> where DestroyedType : UnityObject
+        public static class Destroyed
         {
-            private static List<Action<ObjectDestroyedEventArgs<DestroyedType>>> AddedMethods = new List<Action<ObjectDestroyedEventArgs<DestroyedType>>>();
-            public static void AddHandler(Action<ObjectDestroyedEventArgs<DestroyedType>> method)
+            private static List<MethodInfo> AddedMethods = new List<MethodInfo>();
+            public static void AddHandler<DestroyedType>(Action<ObjectDestroyedEventArgs<DestroyedType>> method) where DestroyedType : UnityObject
             {
-                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method))
+                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method.Method))
                 {
-                    AddedMethods.Add(method);
+                    AddedMethods.Add(method.Method);
                     _objectDestroyed += (e) =>
                     {
                         if (typeof(DestroyedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(DestroyedType) == e.GetType().GenericTypeArguments[0])
@@ -122,9 +125,10 @@ namespace Nalka.Tools.Unity
             }
 
             [Obsolete("Not implemented", true)]
-            public static void RemoveHandler(Action<ObjectDestroyedEventArgs<DestroyedType>> method)
+            public static void Clear()
             {
-
+                _objectDestroyed = null;
+                AddedMethods.Clear();
             }
         }
         #endregion

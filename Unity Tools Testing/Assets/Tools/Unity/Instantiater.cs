@@ -1,11 +1,12 @@
 ﻿using Nalka.Tools.Extensions;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using UnityEngine;
-using System.Collections.Generic;
 using UnityObject = UnityEngine.Object;
-using System;
 
 namespace Nalka.Tools.Unity
 {
@@ -33,13 +34,13 @@ namespace Nalka.Tools.Unity
         /// <param name="instantiatedObject"><see cref="UnityEngine.Object"/> to instantiate</param>
         /// <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="UnityEngine.Object"/></param>
         /// <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
-        public async static void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
+        public static async void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
         {
             string instantiaterName = instantiaterPath.Remove(instantiaterPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
-            InstiatingObjectEventArgs<InstantiatedT> instantiatingArgs = new InstiatingObjectEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
+            InstantiatingObjectEventArgs<InstantiatedT> instantiatingArgs = new InstantiatingObjectEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
             ObjectInstiatedEventArgs<InstantiatedT> instantiatedArgs = new ObjectInstiatedEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
-            InstiatingObjectEventArgs<UnityObject> sentInstantiatingArgs = (InstiatingObjectEventArgs<UnityObject>)instantiatingArgs;
+            InstantiatingObjectEventArgs<UnityObject> sentInstantiatingArgs = (InstantiatingObjectEventArgs<UnityObject>)instantiatingArgs;
             ObjectInstiatedEventArgs<UnityObject> sentInstantiatedArgs = (ObjectInstiatedEventArgs<UnityObject>)instantiatedArgs;
             _instantiatingObject?.Invoke(sentInstantiatingArgs);
             if (!sentInstantiatingArgs.Cancel)
@@ -56,13 +57,13 @@ namespace Nalka.Tools.Unity
         /// <param name="parent"><see cref="Transform"/> to set as parent of the <paramref name="instantiatedObject"/></param>
         /// <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="UnityEngine.Object"/></param>
         /// <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
-        public async static void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Transform parent, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
+        public static async void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Transform parent, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
         {
             string instantiaterName = instantiaterPath.Remove(instantiaterPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
-            InstiatingObjectEventArgs<InstantiatedT> instantiatingArgs = new InstiatingObjectEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
+            InstantiatingObjectEventArgs<InstantiatedT> instantiatingArgs = new InstantiatingObjectEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
             ObjectInstiatedEventArgs<InstantiatedT> instantiatedArgs = new ObjectInstiatedEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
-            InstiatingObjectEventArgs<UnityObject> sentInstantiatingArgs = (InstiatingObjectEventArgs<UnityObject>)instantiatingArgs;
+            InstantiatingObjectEventArgs<UnityObject> sentInstantiatingArgs = (InstantiatingObjectEventArgs<UnityObject>)instantiatingArgs;
             ObjectInstiatedEventArgs<UnityObject> sentInstantiatedArgs = (ObjectInstiatedEventArgs<UnityObject>)instantiatedArgs;
             _instantiatingObject?.Invoke(sentInstantiatingArgs);
             if (!sentInstantiatingArgs.Cancel)
@@ -80,13 +81,13 @@ namespace Nalka.Tools.Unity
         /// <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="UnityEngine.Object"/></param>
         /// <param name="worldPositionStays">Determines if the world position has to be kept</param>
         /// <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
-        public async static void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Transform parent, bool worldPositionStays, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
+        public static async void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Transform parent, bool worldPositionStays, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
         {
             string instantiaterName = instantiaterPath.Remove(instantiaterPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
-            InstiatingObjectEventArgs<InstantiatedT> instantiatingArgs = new InstiatingObjectEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
+            InstantiatingObjectEventArgs<InstantiatedT> instantiatingArgs = new InstantiatingObjectEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
             ObjectInstiatedEventArgs<InstantiatedT> instantiatedArgs = new ObjectInstiatedEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
-            InstiatingObjectEventArgs<UnityObject> sentInstantiatingArgs = (InstiatingObjectEventArgs<UnityObject>)instantiatingArgs;
+            InstantiatingObjectEventArgs<UnityObject> sentInstantiatingArgs = (InstantiatingObjectEventArgs<UnityObject>)instantiatingArgs;
             ObjectInstiatedEventArgs<UnityObject> sentInstantiatedArgs = (ObjectInstiatedEventArgs<UnityObject>)instantiatedArgs;
             _instantiatingObject?.Invoke(sentInstantiatingArgs);
             if (!sentInstantiatingArgs.Cancel)
@@ -104,13 +105,13 @@ namespace Nalka.Tools.Unity
         /// <param name="rotation">The <see cref="Space.World"/> position of the <paramref name="instantiatedObject"/></param>
         /// <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="UnityEngine.Object"/></param>
         /// <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
-        public async static void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Vector3 position, Quaternion rotation, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
+        public static async void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Vector3 position, Quaternion rotation, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
         {
             string instantiaterName = instantiaterPath.Remove(instantiaterPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
-            InstiatingObjectEventArgs<InstantiatedT> instantiatingArgs = new InstiatingObjectEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
+            InstantiatingObjectEventArgs<InstantiatedT> instantiatingArgs = new InstantiatingObjectEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
             ObjectInstiatedEventArgs<InstantiatedT> instantiatedArgs = new ObjectInstiatedEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
-            InstiatingObjectEventArgs<UnityObject> sentInstantiatingArgs = (InstiatingObjectEventArgs<UnityObject>)instantiatingArgs;
+            InstantiatingObjectEventArgs<UnityObject> sentInstantiatingArgs = (InstantiatingObjectEventArgs<UnityObject>)instantiatingArgs;
             ObjectInstiatedEventArgs<UnityObject> sentInstantiatedArgs = (ObjectInstiatedEventArgs<UnityObject>)instantiatedArgs;
             _instantiatingObject?.Invoke(sentInstantiatingArgs);
             if (!sentInstantiatingArgs.Cancel)
@@ -129,19 +130,27 @@ namespace Nalka.Tools.Unity
         /// <param name="parent"><see cref="Transform"/> to set as parent of the <paramref name="instantiatedObject"/></param>
         /// <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="UnityEngine.Object"/></param>
         /// <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
-        public async static void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Vector3 position, Quaternion rotation, Transform parent, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
+        public static async void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Vector3 position, Quaternion rotation, Transform parent, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
         {
             string instantiaterName = instantiaterPath.Remove(instantiaterPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
-            InstiatingObjectEventArgs<InstantiatedT> instantiatingArgs = new InstiatingObjectEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
+            InstantiatingObjectEventArgs<InstantiatedT> instantiatingArgs = new InstantiatingObjectEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
             ObjectInstiatedEventArgs<InstantiatedT> instantiatedArgs = new ObjectInstiatedEventArgs<InstantiatedT>(instantiatedObject, instantiaterName);
-            InstiatingObjectEventArgs<UnityObject> sentInstantiatingArgs = (InstiatingObjectEventArgs<UnityObject>)instantiatingArgs;
+            InstantiatingObjectEventArgs<UnityObject> sentInstantiatingArgs = (InstantiatingObjectEventArgs<UnityObject>)instantiatingArgs;
             ObjectInstiatedEventArgs<UnityObject> sentInstantiatedArgs = (ObjectInstiatedEventArgs<UnityObject>)instantiatedArgs;
             _instantiatingObject?.Invoke(sentInstantiatingArgs);
             if (!sentInstantiatingArgs.Cancel)
             {
                 UnityObject.Instantiate(instantiatedObject, position, rotation);
                 _objectInstantiated?.Invoke(sentInstantiatedArgs);
+            }
+        }
+
+        public static void Test()
+        {
+            foreach (Delegate element in _instantiatingObject.GetInvocationList())
+            {
+                Debug.Log($"{_instantiatingObject.GetInvocationList().Any(e => element.Method == e.Method)}");
             }
         }
         #endregion
@@ -152,16 +161,17 @@ namespace Nalka.Tools.Unity
         /// </summary>
         public static class Instantiating<InstantiatedType> where InstantiatedType : UnityObject
         {
-            private static List<Action<InstiatingObjectEventArgs<InstantiatedType>>> AddedMethods = new List<Action<InstiatingObjectEventArgs<InstantiatedType>>>();
-            public static void AddHandler(Action<InstiatingObjectEventArgs<InstantiatedType>> method)
+            private static List<MethodInfo> AddedMethods = new List<MethodInfo>();
+            public static void AddHandler(Action<InstantiatingObjectEventArgs<InstantiatedType>> method)
             {
-                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method))
+                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method.Method))
                 {
+                    AddedMethods.Add(method.Method);
                     _instantiatingObject += (e) =>
                     {
                         if (typeof(InstantiatedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(InstantiatedType) == e.GetType().GenericTypeArguments[0])
                         {
-                            method((InstiatingObjectEventArgs<InstantiatedType>)e);
+                            method((InstantiatingObjectEventArgs<InstantiatedType>)e);
                         }
                     };
                 }
@@ -170,8 +180,8 @@ namespace Nalka.Tools.Unity
             [Obsolete("Not implemented", true)]
             public static void Clear()
             {
-                AddedMethods.Clear();
                 _instantiatingObject = null;
+                AddedMethods.Clear();
             }
         }
 
@@ -180,13 +190,12 @@ namespace Nalka.Tools.Unity
         /// </summary>
         public static class Instantiated<InstantiatedType> where InstantiatedType : UnityObject
         {
-
-            private static List<Action<ObjectInstiatedEventArgs<InstantiatedType>>> AddedMethods = new List<Action<ObjectInstiatedEventArgs<InstantiatedType>>>();
-            public static void AddHandler(Action<ObjectInstiatedEventArgs<InstantiatedType>> method) 
+            private static List<MethodInfo> AddedMethods = new List<MethodInfo>();
+            public static void AddHandler(Action<ObjectInstiatedEventArgs<InstantiatedType>> method)
             {
-                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method))
+                if (AllowsMultipleEqualHandler || !AddedMethods.Contains(method.Method))
                 {
-                    AddedMethods.Add(method);
+                    AddedMethods.Add(method.Method);
                     _objectInstantiated += (e) =>
                     {
                         if (typeof(InstantiatedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(InstantiatedType) == e.GetType().GenericTypeArguments[0])
@@ -197,10 +206,11 @@ namespace Nalka.Tools.Unity
                 }
             }
 
-            [Obsolete("Not implemented", true)]
+            [Obsolete("Not implemented", false)]
             public static void Clear()
             {
-
+                _objectInstantiated = null;
+                AddedMethods.Clear();
             }
         }
         #endregion

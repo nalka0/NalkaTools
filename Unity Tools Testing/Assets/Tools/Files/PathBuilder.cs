@@ -4,6 +4,9 @@ using System.IO;
 
 namespace Nalka.Tools.Files
 {
+    /// <summary>
+    /// Provides tools for finding good path
+    /// </summary>
     public static class PathBuilder
     {
         /// <summary>
