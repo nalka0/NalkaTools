@@ -34,8 +34,10 @@ namespace Nalka.Tools.Unity
         /// <param name="DestroyedObject"><see cref="UnityEngine.Object"/> to destroy</param>
         /// <param name="msDelay">The number of milliseconds to wait before destroying the given <see cref="UnityEngine.Object"/></param>
         /// <param name="destroyerPath">This argument is automatically provided, please do not provide it</param>
-        public static async void Destroy<DestroyedT>(DestroyedT DestroyedObject, int msDelay = 0, [CallerFilePath] string destroyerPath = "") where DestroyedT : UnityObject
+        public static async Task Destroy<DestroyedT>(DestroyedT DestroyedObject, int msDelay = 0, [CallerFilePath] string destroyerPath = "") where DestroyedT : UnityObject
         {
+            if (DestroyedObject is Transform)
+                return;
             string destroyerName = destroyerPath.Remove(destroyerPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
             DestroyingObjectEventArgs<DestroyedT> DestroyingArgs = new DestroyingObjectEventArgs<DestroyedT>(DestroyedObject, destroyerName);
@@ -50,6 +52,28 @@ namespace Nalka.Tools.Unity
             }
         }
 
+        //ici on gere les components
+        public static async Task Destroy(GameObject DestroyedObject, int msDelay = 0, [CallerFilePath] string destroyerPath = "")
+        {
+            foreach (Component element in DestroyedObject.GetComponents<Component>())
+            {
+                await Destroy(element, 0, destroyerPath);
+            }
+            string destroyerName = destroyerPath.Remove(destroyerPath.Length - 3).Split('\\').Last();
+            await Destroy<GameObject>(DestroyedObject, msDelay, destroyerPath);
+        }
+
+        //ici on gere les enfants
+        public static async Task Destroy(Transform DestroyedObject, int msDelay = 0, [CallerFilePath] string destroyerPath = "")
+        {
+            await Task.Delay(msDelay);
+            foreach (Transform item in DestroyedObject)
+            {
+                await Destroy(item, 0, destroyerPath);
+            }
+            await Destroy(DestroyedObject.gameObject, 0, destroyerPath);
+        }
+
         [Obsolete("Not ready yet", true)]
         /// <summary>
         /// Destroys the given <see cref="UnityEngine.Object"/> and fires related events
@@ -57,7 +81,7 @@ namespace Nalka.Tools.Unity
         /// <param name="DestroyedObject"><see cref="UnityEngine.Object"/> to destroy</param>
         /// <param name="msDelay">The number of milliseconds to wait before destroying the given <see cref="UnityEngine.Object"/></param>
         /// <param name="destroyerPath">This argument is automatically provided, please do not provide it</param>
-        public static async void DestroyImmediate<DestroyedT>(DestroyedT DestroyedObject, int msDelay = 0, [CallerFilePath] string destroyerPath = "") where DestroyedT : UnityObject
+        public static async Task DestroyImmediate<DestroyedT>(DestroyedT DestroyedObject, int msDelay = 0, [CallerFilePath] string destroyerPath = "") where DestroyedT : UnityObject
         {
             string destroyerName = destroyerPath.Remove(destroyerPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
@@ -87,7 +111,7 @@ namespace Nalka.Tools.Unity
                     AddedMethods.Add(method.Method);
                     _destroyingObject += (e) =>
                     {
-                        if (typeof(DestroyedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(DestroyedType) == e.GetType().GenericTypeArguments[0])
+                        if (e.DestroyedObject is DestroyedType && (typeof(DestroyedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(DestroyedType) == e.GetType().GenericTypeArguments[0]))
                         {
                             method((DestroyingObjectEventArgs<DestroyedType>)e);
                         }
@@ -116,7 +140,7 @@ namespace Nalka.Tools.Unity
                     AddedMethods.Add(method.Method);
                     _objectDestroyed += (e) =>
                     {
-                        if (typeof(DestroyedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(DestroyedType) == e.GetType().GenericTypeArguments[0])
+                        if (e.DestroyedObject is DestroyedType && (typeof(DestroyedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(DestroyedType) == e.GetType().GenericTypeArguments[0]))
                         {
                             method((ObjectDestroyedEventArgs<DestroyedType>)e);
                         }
@@ -132,10 +156,5 @@ namespace Nalka.Tools.Unity
             }
         }
         #endregion
-    }
-
-    internal class RefNeeded
-    {
-        public bool RefCancel { get; set; } = false;
     }
 }

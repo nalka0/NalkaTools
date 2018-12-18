@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Nalka.Tools.Extensions;
 
 namespace Nalka.Tools.Unity
 {
     /// <summary>
-    /// 
+    /// Provides event data when an <see cref="InstantiatingObjectEventHandler"/> is raised
     /// </summary>
     /// <typeparam name="InstantiatingT">Type of the instantiated <see cref="Object"/></typeparam>
     public class InstantiatingObjectEventArgs<InstantiatingT> : InstiationEventArgsBase<InstantiatingT> where InstantiatingT : Object
@@ -36,5 +37,5 @@ namespace Nalka.Tools.Unity
         public static explicit operator InstantiatingObjectEventArgs<Object>(InstantiatingObjectEventArgs<InstantiatingT> e) => new InstantiatingObjectEventArgs<Object>(e.InstantiatedObject, e.InstantiatingFileName, e.trick);
     }
 
-    public delegate void InstantiatingObjectEventHandler(InstantiatingObjectEventArgs<Object> e);
+    internal delegate void InstantiatingObjectEventHandler(InstantiatingObjectEventArgs<Object> e);
 }

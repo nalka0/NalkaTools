@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Nalka.Tools.Extensions;
 
 namespace Nalka.Tools.Unity
 {
     /// <summary>
-    /// 
+    /// Provides event data when a <see cref="DestroyingObjectEventHandler"/> is raised
     /// </summary>
     /// <typeparam name="DestroyingT">Type of the destroyed <see cref="Object"/></typeparam>
     public sealed class DestroyingObjectEventArgs<DestroyingT> : DestrcutionEventArgsBase<DestroyingT> where DestroyingT : Object
@@ -36,5 +37,5 @@ namespace Nalka.Tools.Unity
         public static explicit operator DestroyingObjectEventArgs<Object>(DestroyingObjectEventArgs<DestroyingT> e) => new DestroyingObjectEventArgs<Object>(e.DestroyedObject, e.DestroyingFileName, e.trick);
     }
 
-    public delegate void DestroyingObjectEventHandler(DestroyingObjectEventArgs<Object> e);
+    internal delegate void DestroyingObjectEventHandler(DestroyingObjectEventArgs<Object> e);
 }

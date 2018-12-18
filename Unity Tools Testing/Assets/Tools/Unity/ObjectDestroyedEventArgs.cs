@@ -19,5 +19,5 @@ namespace Nalka.Tools.Unity
         public static explicit operator ObjectDestroyedEventArgs<DestroyedT>(ObjectDestroyedEventArgs<Object> e) => new ObjectDestroyedEventArgs<DestroyedT>((DestroyedT)e.DestroyedObject, e.DestroyingFileName);
     }
 
-    public delegate void ObjectDestroyedEventHandler(ObjectDestroyedEventArgs<Object> e);
+    internal delegate void ObjectDestroyedEventHandler(ObjectDestroyedEventArgs<Object> e);
 }

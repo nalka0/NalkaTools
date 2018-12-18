@@ -1,5 +1,4 @@
-﻿using Nalka.Tools.Unity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityObject = UnityEngine.Object;
@@ -60,4 +59,10 @@ namespace Nalka.Tools.Extensions
         /// <returns>Returns the number of Years (365.25 days periods) in the given <see cref="TimeSpan"/></returns>
         public static double GetTotalYears(this TimeSpan timeSpan) => timeSpan.TotalDays / 365.25;
     }
+
+    internal class RefNeeded
+    {
+        public bool RefCancel { get; set; } = false;
+    }
+
 }

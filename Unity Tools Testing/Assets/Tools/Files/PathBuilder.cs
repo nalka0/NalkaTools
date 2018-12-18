@@ -10,7 +10,7 @@ namespace Nalka.Tools.Files
     public static class PathBuilder
     {
         /// <summary>
-        /// 
+        /// Finds the first filename available by adding numbers after <paramref name="InitialPath"/>
         /// </summary>
         /// <param name="InitialPath">The initial path to be checked without the file extension</param>
         /// <param name="Extension">The file's extension (<see cref="string.Empty"/> or <see cref="null"/> if no extension should be added)

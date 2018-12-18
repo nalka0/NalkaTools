@@ -8,24 +8,25 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    [Obsolete] public string Temp = "Je teste des components avec destroy immedaite";
+    public string Temp = "Je teste des components";
     private void Start()
     {
         Destroyer.AllowsMultipleEqualHandler = false;
-        Destroyer.Destroyed.AddHandler<GameObject>(OtherTestMethod);
-        Destroyer.Destroyed.AddHandler<GameObject>(OtherTestMethod);
+        Destroyer.Destroying.AddHandler<Test>(Tester);
+        Destroyer.Destroying.AddHandler<GameObject>(GameObject);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Destroyer.Destroy(gameObject);
+            Destroyer.Destroy(gameObject).GetAwaiter().GetResult();
         }
         else if (Input.GetKeyDown(KeyCode.B))
         {
-            Instantiater.Test();
+            //Instantiater.Test();
         }
     }
-    private void OtherTestMethod(ObjectDestroyedEventArgs<GameObject> e) => Debug.Log($"{e.DestroyedObject.name}");
+    private void Tester(DestroyingObjectEventArgs<Test> e) => Debug.Log($"Test");
+    private void GameObject(DestroyingObjectEventArgs<GameObject> e) => Debug.Log($"GameObject");
 }

@@ -34,7 +34,7 @@ namespace Nalka.Tools.Unity
         /// <param name="instantiatedObject"><see cref="UnityEngine.Object"/> to instantiate</param>
         /// <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="UnityEngine.Object"/></param>
         /// <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
-        public static async void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
+        public static async Task Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
         {
             string instantiaterName = instantiaterPath.Remove(instantiaterPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
@@ -57,7 +57,7 @@ namespace Nalka.Tools.Unity
         /// <param name="parent"><see cref="Transform"/> to set as parent of the <paramref name="instantiatedObject"/></param>
         /// <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="UnityEngine.Object"/></param>
         /// <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
-        public static async void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Transform parent, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
+        public static async Task Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Transform parent, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
         {
             string instantiaterName = instantiaterPath.Remove(instantiaterPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
@@ -81,7 +81,7 @@ namespace Nalka.Tools.Unity
         /// <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="UnityEngine.Object"/></param>
         /// <param name="worldPositionStays">Determines if the world position has to be kept</param>
         /// <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
-        public static async void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Transform parent, bool worldPositionStays, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
+        public static async Task Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Transform parent, bool worldPositionStays, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
         {
             string instantiaterName = instantiaterPath.Remove(instantiaterPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
@@ -105,7 +105,7 @@ namespace Nalka.Tools.Unity
         /// <param name="rotation">The <see cref="Space.World"/> position of the <paramref name="instantiatedObject"/></param>
         /// <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="UnityEngine.Object"/></param>
         /// <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
-        public static async void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Vector3 position, Quaternion rotation, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
+        public static async Task Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Vector3 position, Quaternion rotation, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
         {
             string instantiaterName = instantiaterPath.Remove(instantiaterPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
@@ -130,7 +130,7 @@ namespace Nalka.Tools.Unity
         /// <param name="parent"><see cref="Transform"/> to set as parent of the <paramref name="instantiatedObject"/></param>
         /// <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="UnityEngine.Object"/></param>
         /// <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
-        public static async void Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Vector3 position, Quaternion rotation, Transform parent, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
+        public static async Task Instantiate<InstantiatedT>(InstantiatedT instantiatedObject, Vector3 position, Quaternion rotation, Transform parent, int msDelay = 0, [CallerFilePath] string instantiaterPath = "") where InstantiatedT : UnityObject
         {
             string instantiaterName = instantiaterPath.Remove(instantiaterPath.Length - 3).Split('\\').Last();
             await Task.Delay(msDelay);
@@ -145,7 +145,7 @@ namespace Nalka.Tools.Unity
                 _objectInstantiated?.Invoke(sentInstantiatedArgs);
             }
         }
-
+        [Obsolete]
         public static void Test()
         {
             foreach (Delegate element in _instantiatingObject.GetInvocationList())
@@ -169,7 +169,7 @@ namespace Nalka.Tools.Unity
                     AddedMethods.Add(method.Method);
                     _instantiatingObject += (e) =>
                     {
-                        if (typeof(InstantiatedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(InstantiatedType) == e.GetType().GenericTypeArguments[0])
+                        if (e.InstantiatedObject is InstantiatedType && (typeof(InstantiatedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(InstantiatedType) == e.GetType().GenericTypeArguments[0]))
                         {
                             method((InstantiatingObjectEventArgs<InstantiatedType>)e);
                         }
@@ -198,7 +198,7 @@ namespace Nalka.Tools.Unity
                     AddedMethods.Add(method.Method);
                     _objectInstantiated += (e) =>
                     {
-                        if (typeof(InstantiatedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(InstantiatedType) == e.GetType().GenericTypeArguments[0])
+                        if (e.InstantiatedObject is InstantiatedType && (typeof(InstantiatedType).Inherits(e.GetType().GenericTypeArguments[0]) || typeof(InstantiatedType) == e.GetType().GenericTypeArguments[0]))
                         {
                             method((ObjectInstiatedEventArgs<InstantiatedType>)e);
                         }
