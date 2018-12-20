@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NalkaTools</name>
+    </assembly>
+    <members>
+        <member name="T:Nalka.Tools.Extensions.IntExtensions">
+            <summary>
+            Provides extension methods for <see cref="T:System.Int32"/>
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Extensions.IntExtensions.IsBetween(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Determines if <paramref name="current"/> is between <paramref name="minValue"/> and <paramref name="maxValue"/> 
+            </summary>
+            <param name="current">The <see cref="T:System.Int32"/> to compare with <paramref name="minValue"/> and <paramref name="maxValue"/></param>
+            <param name="minValue">The minimum value for <paramref name="current"/> in order to return <see langword="true"/>. This parameter is EXLCUSIVE</param>
+            <param name="maxValue">The maximum value for <paramref name="current"/> in order to return <see langword="true"/>. This parameter is EXLCUSIVE</param>
+            <returns><see langword="true"/> if <paramref name="current"/> is strictly higher than <paramref name="minValue"/> and stricly lower than <paramref name="maxValue"/>. <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="T:Nalka.Tools.Extensions.TypeExtensions">
+            <summary>
+            Provides extension methods for <see cref="T:System.Type"/>
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Extensions.TypeExtensions.Inherits(System.Type,System.Type)">
+            <summary>
+            Determines if <paramref name="first"/> inherits from <paramref name="other"/>
+            </summary>
+            <param name="first">The first <see cref="T:System.Type"/> to compare</param>
+            <param name="other">The other <see cref="T:System.Type"/> to compare</param>
+            <returns><see langword="true"/> if <paramref name="first"/> inherits from <paramref name="other"/>, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="T:Nalka.Tools.Extensions.ClassesExtensions">
+            <summary>
+            Provides extensions for classes
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Extensions.ClassesExtensions.MemberwiseEquals``1(``0,``0)">
+            <summary>
+            Determines by comparing every member if <paramref name="first"/> is equal to <paramref name="other"/>
+            </summary>
+            <typeparam name="T">Type of the classes to compare</typeparam>
+            <param name="first">First <typeparamref name="T"/> to compare</param>
+            <param name="other">Other <typeparamref name="T"/> to compare</param>
+            <returns><see langword="true"/> if every member from <paramref name="first"/> equals the correspoding member from <paramref name="other"/>, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="T:Nalka.Tools.Extensions.TimeSpanExtensions">
+            <summary>
+            Provides extensions method for <see cref="T:System.TimeSpan"/>
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Extensions.TimeSpanExtensions.GetTotalWeeks(System.TimeSpan)">
+            <summary>
+            Returns the number of weeks (7 days periods) in the given <see cref="T:System.TimeSpan"/>
+            </summary>
+            <param name="timeSpan"><see cref="T:System.TimeSpan"/> to get the week count of</param>
+            <returns>The number of weeks (7 days periods) in the given <see cref="T:System.TimeSpan"/></returns>
+        </member>
+        <member name="M:Nalka.Tools.Extensions.TimeSpanExtensions.GetTotalYears(System.TimeSpan)">
+            <summary>
+            Returns the number of years (365.25 days periods) in the given <see cref="T:System.TimeSpan"/>
+            </summary>
+            <param name="timeSpan"><see cref="T:System.TimeSpan"/> to get the years count of</param>
+            <returns>The number of years (365.25 days periods) in the given <see cref="T:System.TimeSpan"/></returns>
+        </member>
+        <member name="T:Nalka.Tools.Files.PathBuilder">
+            <summary>
+            Provides tools for finding good path
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Files.PathBuilder.GetAvailableFileName(System.String,System.String,System.UInt32)">
+            <summary>
+            Finds the first filename available by adding numbers after <paramref name="InitialPath"/>
+            </summary>
+            <param name="InitialPath">The initial path to be checked without the file extension</param>
+            <param name="Extension">The file's extension (<see cref="F:System.String.Empty"/> or <see langword="null"/> if no extension should be added)</param>
+            <param name="MaxTries"></param>
+            <returns></returns>
+            <exception cref="T:System.IO.FileNotFoundException"> when no available path is found</exception>
+        </member>
+        <member name="T:Nalka.Tools.Unity.InstantiatingObjectEventArgs`1">
+            <summary>
+            Provides event data when an <see cref="T:Nalka.Tools.Unity.InstantiatingObjectEventHandler"/> is raised
+            </summary>
+            <typeparam name="InstantiatingT">Type of the instantiated <see cref="T:UnityEngine.Object"/></typeparam>
+        </member>
+        <member name="P:Nalka.Tools.Unity.InstantiatingObjectEventArgs`1.Cancel">
+            <summary>
+            Determines if the <see cref="T:UnityEngine.Object"/>'s instantiation has to be cancelled
+            </summary>
+        </member>
+        <member name="T:Nalka.Tools.Unity.Destroyer">
+            <summary>
+            Provides tools for <see cref="T:UnityEngine.Object"/>'s destruction
+            </summary>
+        </member>
+        <member name="P:Nalka.Tools.Unity.Destroyer.AllowsMultipleEqualHandler">
+            <summary>
+            Determines if the handlers have to be added even if they have already been added
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Destroyer.Destroy``1(``0,System.Int32,System.String)">
+            <summary>
+            Destroys the given <see cref="T:UnityEngine.Object"/> and fires related events
+            </summary>
+            <param name="DestroyedObject"><see cref="T:UnityEngine.Object"/> to destroy</param>
+            <param name="msDelay">The number of milliseconds to wait before destroying the given <see cref="T:UnityEngine.Object"/></param>
+            <param name="destroyerPath">This argument is automatically provided, please do not provide it</param>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Destroyer.DestroyImmediate``1(``0,System.Int32,System.String)">
+            <summary>
+            Destroys the given <see cref="T:UnityEngine.Object"/> and fires related events
+            </summary>
+            <param name="DestroyedObject"><see cref="T:UnityEngine.Object"/> to destroy</param>
+            <param name="msDelay">The number of milliseconds to wait before destroying the given <see cref="T:UnityEngine.Object"/></param>
+            <param name="destroyerPath">This argument is automatically provided, please do not provide it</param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.Destroyer.Destroying">
+            <summary>
+            Handlers added here will be invoked when before the <see cref="T:UnityEngine.Object"/>'s destruction
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Destroyer.Destroying.AddHandler``1(System.Action{Nalka.Tools.Unity.DestroyingObjectEventArgs{``0}})">
+            <summary>
+            Adds a method to execute before an object of type <typeparamref name="DestroyedType"/> or any derived class was destroyed by the <see cref="T:Nalka.Tools.Unity.Destroyer"/>  
+            </summary>
+            <typeparam name="DestroyedType">Type of the object's destruction to listen</typeparam>
+            <param name="method">Event listener to be added</param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.Destroyer.Destroyed">
+            <summary>
+            Handlers added here will be invoked when after a <see cref="T:UnityEngine.Object"/>'s destruction
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Destroyer.Destroyed.AddHandler``1(System.Action{Nalka.Tools.Unity.ObjectDestroyedEventArgs{``0}})">
+            <summary>
+            Adds a method to execute after an object of type <typeparamref name="DestroyedType"/> or any derived class was destroyed by the <see cref="T:Nalka.Tools.Unity.Destroyer"/>  
+            </summary>
+            <typeparam name="DestroyedType">Type of the object's destruction to listen</typeparam>
+            <param name="method">Event listener to be added</param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.DestroyingObjectEventArgs`1">
+            <summary>
+            Provides event data when a <see cref="T:Nalka.Tools.Unity.DestroyingObjectEventHandler"/> is raised
+            </summary>
+            <typeparam name="DestroyingT">Type of the destroyed <see cref="T:UnityEngine.Object"/></typeparam>
+        </member>
+        <member name="P:Nalka.Tools.Unity.DestroyingObjectEventArgs`1.Cancel">
+            <summary>
+            Determines if the <see cref="T:UnityEngine.Object"/>'s destruction has to be cancelled
+            </summary>
+        </member>
+        <member name="T:Nalka.Tools.Unity.DestrcutionEventArgsBase`1">
+            <summary>
+            Provides event data for all <see cref="T:UnityEngine.Object"/> destructions
+            </summary>
+            <typeparam name="DestroyedT">Type of the <see cref="T:UnityEngine.Object"/> that has been destroyed</typeparam>
+        </member>
+        <member name="P:Nalka.Tools.Unity.DestrcutionEventArgsBase`1.DestroyedObject">
+            <summary>
+            The <see cref="T:UnityEngine.Object"/> being destroyed
+            </summary>
+        </member>
+        <member name="P:Nalka.Tools.Unity.DestrcutionEventArgsBase`1.DestroyingFileName">
+            <summary>
+            Name of the file that destroyed the <see cref="T:UnityEngine.Object"/>
+            </summary>
+        </member>
+        <member name="T:Nalka.Tools.Unity.Instantiater">
+            <summary>
+            Provides tools for <see cref="T:UnityEngine.Object"/>'s instantiation
+            </summary>
+        </member>
+        <member name="P:Nalka.Tools.Unity.Instantiater.AllowsMultipleEqualHandler">
+            <summary>
+            Determines if the handlers have to be added even if they have already been added.
+            </summary>
+            <value><see langword="false"/></value>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Instantiater.Instantiate``1(``0,System.Int32,System.String)">
+            <summary>
+            Instantiates the given <see cref="T:UnityEngine.Object"/> and fires related events
+            </summary>
+            <param name="instantiatedObject"><see cref="T:UnityEngine.Object"/> to instantiate</param>
+            <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="T:UnityEngine.Object"/></param>
+            <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Instantiater.Instantiate``1(``0,UnityEngine.Vector3,UnityEngine.Quaternion,System.Int32,System.String)">
+            <summary>
+            Instantiates the given <see cref="T:UnityEngine.Object"/> with given world position and rotation and fires related events
+            </summary>
+            <param name="instantiatedObject"><see cref="T:UnityEngine.Object"/> to instantiate</param>
+            <param name="position">The <see cref="F:UnityEngine.Space.World"/> position of the <paramref name="instantiatedObject"/></param>
+            <param name="rotation">The <see cref="F:UnityEngine.Space.World"/> position of the <paramref name="instantiatedObject"/></param>
+            <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="T:UnityEngine.Object"/></param>
+            <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Instantiater.Instantiate``1(``0,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform,System.Int32,System.String)">
+            <summary>
+            Instantiates the given <see cref="T:UnityEngine.Object"/> with given local position and rotation and fires related events
+            </summary>
+            <param name="instantiatedObject"><see cref="T:UnityEngine.Object"/> to instantiate</param>
+            <param name="position">The <see cref="F:UnityEngine.Space.World"/> position of the <paramref name="instantiatedObject"/></param>
+            <param name="rotation">The <see cref="F:UnityEngine.Space.World"/> position of the <paramref name="instantiatedObject"/></param>
+            <param name="parent"><see cref="T:UnityEngine.Transform"/> to set as parent of the <paramref name="instantiatedObject"/></param>
+            <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="T:UnityEngine.Object"/></param>
+            <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Instantiater.Instantiate``1(``0,UnityEngine.Transform,System.Int32,System.String)">
+            <summary>
+            Instantiates the given <see cref="T:UnityEngine.Object"/>, sets <paramref name="parent"/> as parent and fires related events
+            </summary>
+            <param name="instantiatedObject"><see cref="T:UnityEngine.Object"/> to instantiate</param>
+            <param name="parent"><see cref="T:UnityEngine.Transform"/> to set as parent of the <paramref name="instantiatedObject"/></param>
+            <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="T:UnityEngine.Object"/></param>
+            <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Instantiater.Instantiate``1(``0,UnityEngine.Transform,System.Boolean,System.Int32,System.String)">
+            <summary>
+            Instantiates the given <see cref="T:UnityEngine.Object"/>, sets <paramref name="parent"/> as parent and fires related events
+            </summary>
+            <param name="instantiatedObject"><see cref="T:UnityEngine.Object"/> to instantiate</param>
+            <param name="parent"><see cref="T:UnityEngine.Transform"/> to set as parent of the <paramref name="instantiatedObject"/></param>
+            <param name="msDelay">The number of milliseconds to wait before instantiating the given <see cref="T:UnityEngine.Object"/></param>
+            <param name="worldPositionStays">Determines if the world position has to be kept</param>
+            <param name="instantiaterPath">This argument is automatically provided, please do not provide it</param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.Instantiater.Instantiating">
+            <summary>
+            Handlers added here will be invoked when before the <see cref="T:UnityEngine.Object"/>'s instantiation
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Instantiater.Instantiating.AddHandler``1(System.Action{Nalka.Tools.Unity.InstantiatingObjectEventArgs{``0}})">
+            <summary>
+            Adds a method to execute before an object of type <typeparamref name="InstantiatedType"/> was instantiated by the <see cref="T:Nalka.Tools.Unity.Instantiater"/>
+            </summary>
+            <typeparam name="InstantiatedType">Type of the object's instantiation to listen</typeparam>
+            <param name="method">Event listener to be added</param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.Instantiater.Instantiated">
+            <summary>
+            Handlers added here will be invoked when after the <see cref="T:UnityEngine.Object"/>'s instantiation
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Unity.Instantiater.Instantiated.AddHandler``1(System.Action{Nalka.Tools.Unity.ObjectInstiatedEventArgs{``0}})">
+            <summary>
+            Adds a method to execute after an object of type <typeparamref name="InstantiatedType"/> was instantiated by the <see cref="T:Nalka.Tools.Unity.Instantiater"/>
+            </summary>
+            <typeparam name="InstantiatedType">Type of the object's instantiation to listen</typeparam>
+            <param name="method">Event listener to be added</param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.InstiationEventArgsBase`1">
+            <summary>
+            Provides event data for all <see cref="T:UnityEngine.Object"/> instantiations
+            </summary>
+            <typeparam name="InstantiatedT">Type of the <see cref="T:UnityEngine.Object"/> that has been instantiated</typeparam>
+        </member>
+        <member name="P:Nalka.Tools.Unity.InstiationEventArgsBase`1.InstantiatedObject">
+            <summary>
+            The <see cref="T:UnityEngine.Object"/> being instantiated
+            </summary>
+        </member>
+        <member name="P:Nalka.Tools.Unity.InstiationEventArgsBase`1.InstantiatingFileName">
+            <summary>
+            Name of the file that instantiated the <see cref="T:UnityEngine.Object"/>
+            </summary>
+        </member>
+        <member name="T:Nalka.Tools.Unity.ObjectDestroyedEventArgs`1">
+            <summary>
+            Provides event data for handlers added to <see cref="T:Nalka.Tools.Unity.Destroyer.Destroyed"/>
+            </summary>
+            <typeparam name="DestroyedT">Type of the destroyed <see cref="T:UnityEngine.Object"/></typeparam>
+        </member>
+        <member name="T:Nalka.Tools.Unity.ObjectInstiatedEventArgs`1">
+            <summary>
+            Provides event data for handlers added to <see cref="T:Nalka.Tools.Unity.Destroyer.Destroying"/>
+            </summary>
+            <typeparam name="DestroyedT">Type of the destroyed <see cref="T:UnityEngine.Object"/></typeparam>
+        </member>
+    </members>
+</doc>
