@@ -8,12 +8,17 @@ namespace Nalka.Tools.Unity
 {
     public abstract class DraggableBase : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        public event ObjectPickedEventHandler Picked;
-        public event HoldingObjectEventHandler Holding;
-        public event ObjectReleasedEventHandler Released;
-
+        #region Fields
         private bool selected;
+        #endregion
 
+        #region Events
+        public virtual event ObjectPickedEventHandler Picked;
+        public virtual event HoldingObjectEventHandler Holding;
+        public virtual event ObjectReleasedEventHandler Released;
+        #endregion
+        
+        #region Unity methods
         protected virtual void Start()
         {
 
@@ -29,7 +34,7 @@ namespace Nalka.Tools.Unity
 
         public virtual void OnPointerDown(PointerEventData eventData)
         {
-            Picked?.Invoke();
+            Picked?.Invoke(new DraggablePickedEventArgs<DraggableBase>(this));
             selected = true;
         }
 
@@ -38,5 +43,6 @@ namespace Nalka.Tools.Unity
             Released?.Invoke(new DraggableReleasedEventArgs<DraggableBase>(this));
             selected = false;
         }
+        #endregion
     }
 }

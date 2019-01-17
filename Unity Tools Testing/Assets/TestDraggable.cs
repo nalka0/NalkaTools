@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Test : DraggableBase
+public class TestDraggable : DraggableBase
 {
     protected override void Start()
     {
