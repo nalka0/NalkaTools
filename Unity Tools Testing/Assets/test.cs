@@ -4,40 +4,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Test : MonoBehaviour
+public class Test : DraggableBase
 {
-    [HideInInspector]
-    public string Temp = "Je teste des components";
-    private void Start()
+    protected override void Start()
     {
-        Destroyer.AllowsMultipleEqualHandler = false;
-        Destroyer.Destroyed.AddHandler<Object>(e =>
-        {
-            Debug.Log($"Destroyed {e.DestroyedObject.GetType().Name} component from {e.DestroyedObject.name}");
-        });
-        Destroyer.Destroying.AddHandler<Object>(e =>
-        {
-            Debug.Log($"Destroying {e.DestroyedObject.GetType().Name} component from {e.DestroyedObject.name}");
-            if (e.DestroyedObject.name == "Child cube")
-            {
-                Debug.LogWarning($"Cancelled");
-                e.Cancel = true;
-            }
-        });
+        base.Picked += Test_Picked;
+        base.Released += Test_Released;
+        base.Start();
     }
 
-    private async void Update()
+    private void Test_Released(DraggableReleasedEventArgs<DraggableBase> e)
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-#pragma warning disable CS0618 // Le type ou le membre est obsolète
-            await Destroyer.Destroy(gameObject);
-#pragma warning restore CS0618 // Le type ou le membre est obsolète
-        }
-        else if (Input.GetKeyDown(KeyCode.B))
-        {
-            //Instantiater.Test();
-        }
+        Debug.Log($"{name} released");
+    }
+
+    private void Test_Picked(DraggablePickedEventArgs<DraggableBase> e)
+    {
+        Debug.Log($"{name} picked");
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+    }
+
+    public override void OnPointerDown(PointerEventData eventData)
+    {
+        base.OnPointerDown(eventData);
+    }
+
+    public override void OnPointerUp(PointerEventData eventData)
+    {
+        base.OnPointerUp(eventData);
     }
 }
