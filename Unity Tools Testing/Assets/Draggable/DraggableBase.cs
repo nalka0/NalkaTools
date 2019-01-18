@@ -6,10 +6,11 @@ using UnityEngine.EventSystems;
 
 namespace Nalka.Tools.Unity
 {
-    public abstract class DraggableBase : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public abstract class DraggableBase : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
         #region Fields
-        private bool selected;
+        private Vector3 startPoint;
+        private float startTime;
         #endregion
 
         #region Events
@@ -17,7 +18,7 @@ namespace Nalka.Tools.Unity
         public virtual event HoldingObjectEventHandler Holding;
         public virtual event ObjectReleasedEventHandler Released;
         #endregion
-        
+
         #region Unity methods
         protected virtual void Start()
         {
@@ -26,22 +27,40 @@ namespace Nalka.Tools.Unity
 
         protected virtual void Update()
         {
-            if (selected)
-            {
-                transform.position = Input.mousePosition;
-            }
         }
 
         public virtual void OnPointerDown(PointerEventData eventData)
         {
+            startTime = Time.time;
+            startPoint = eventData.pointerPressRaycast.worldPosition;
             Picked?.Invoke(new DraggablePickedEventArgs<DraggableBase>(this));
-            selected = true;
+        }
+
+        public virtual void OnDrag(PointerEventData eventData)
+        {
+            transform.position = eventData.position;
+            Debug.Log($"{transform.position}");
+            //Debug.Log($"Camera.main.pixelWidth = {Camera.main.pixelWidth}");
+            ////obtenir la différence entre le nombre de pixels sur l'écran (x et y)
+            //transform.position += new Vector3(eventData.delta.x, eventData.delta.y, transform.position.z);
+            Holding?.Invoke(new DraggableHoldingEventArgs<DraggableBase>(this));
+            
+            #region osef
+            //Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+            //if (Physics.Raycast(ray, out RaycastHit hit, 3000))
+            //{
+            //    //if (hit.collider.gameObject.GetComponent<ContainerBase<DraggableBase>>() != null)
+            //    {
+            //        Vector3 clickedPosition = new Vector3(hit.point.x, hit.point.y, transform.position.z);
+            //        transform.position = Vector3.Lerp(startPoint, clickedPosition, (Time.time - startTime) / 1.0f);
+            //    }
+            //}
+            #endregion
         }
 
         public virtual void OnPointerUp(PointerEventData eventData)
         {
             Released?.Invoke(new DraggableReleasedEventArgs<DraggableBase>(this));
-            selected = false;
         }
         #endregion
     }

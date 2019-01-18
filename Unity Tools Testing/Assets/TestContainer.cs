@@ -21,7 +21,7 @@ public class TestContainer : ContainerBase<DraggableBase>
 
     private void TestContainer_ItemRemoved(ItemRemovedEventArgs<ContainerBase<DraggableBase>> e)
     {
-        Debug.Log($"aurevoir");
+        Debug.Log($"Aurevoir");
     }
 
     private void TestContainer_ItemDropped(ItemDroppedEventArgs<ContainerBase<DraggableBase>> e)

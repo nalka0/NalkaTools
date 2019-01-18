@@ -10,21 +10,9 @@ public class TestDraggable : DraggableBase
 {
     protected override void Start()
     {
-        base.Picked += Test_Picked;
-        base.Released += Test_Released;
         base.Start();
     }
-
-    private void Test_Released(DraggableReleasedEventArgs<DraggableBase> e)
-    {
-        Debug.Log($"{name} released");
-    }
-
-    private void Test_Picked(DraggablePickedEventArgs<DraggableBase> e)
-    {
-        Debug.Log($"{name} picked");
-    }
-
+    
     protected override void Update()
     {
         base.Update();
@@ -33,6 +21,11 @@ public class TestDraggable : DraggableBase
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
+    }
+
+    public override void OnDrag(PointerEventData eventData)
+    {
+        base.OnDrag(eventData);
     }
 
     public override void OnPointerUp(PointerEventData eventData)
