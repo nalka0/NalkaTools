@@ -79,6 +79,138 @@
             <returns></returns>
             <exception cref="T:System.IO.FileNotFoundException"> when no available path is found</exception>
         </member>
+        <member name="T:Nalka.Tools.Unity.ContainerBase`1">
+            <summary>
+            Base class for any object that can recieve draggable objects
+            </summary>
+            <typeparam name="DraggableT">Type of the object this container can recieve</typeparam>
+        </member>
+        <member name="P:Nalka.Tools.Unity.ContainerBase`1.ContainedObject">
+            <summary>
+            The object being contained in this container
+            </summary>
+        </member>
+        <member name="E:Nalka.Tools.Unity.ContainerBase`1.ItemDropped">
+            <summary>
+            Happens when a draggable object is dropped to this container
+            </summary>
+        </member>
+        <member name="E:Nalka.Tools.Unity.ContainerBase`1.ItemRemoved">
+            <summary>
+            Happens when a draggable object is removed from this container
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Unity.ContainerBase`1.#ctor">
+            <summary>
+            Creates a new empty container
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Unity.ContainerBase`1.#ctor(`0)">
+            <summary>
+            Creates a new container that contains an object
+            </summary>
+            <param name="containedObject">The object being contained in this container</param>
+        </member>
+        <member name="M:Nalka.Tools.Unity.ContainerBase`1.OnDrop(UnityEngine.EventSystems.PointerEventData)">
+            <summary>
+            
+            </summary>
+            <param name="eventData"></param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.DraggableBase">
+            <summary>
+            Base class for all objects that can be dragged and dropped
+            </summary>
+        </member>
+        <member name="P:Nalka.Tools.Unity.DraggableBase.LastDraggedObject">
+            <summary>
+            The last draggable object being dragged
+            </summary>
+        </member>
+        <member name="E:Nalka.Tools.Unity.DraggableBase.Picked">
+            <summary>
+            Happens when the object is picked
+            </summary>
+        </member>
+        <member name="E:Nalka.Tools.Unity.DraggableBase.Holding">
+            <summary>
+            Happens every time the object is moved
+            </summary>
+        </member>
+        <member name="E:Nalka.Tools.Unity.DraggableBase.Released">
+            <summary>
+            Happens when the object is released
+            </summary>
+        </member>
+        <member name="M:Nalka.Tools.Unity.DraggableBase.OnPointerDown(UnityEngine.EventSystems.PointerEventData)">
+            <summary>
+            Raised by unity, call base.OnPointerDown(eventData); if you override this method
+            </summary>
+            <param name="eventData">Provided by unity</param>
+        </member>
+        <member name="M:Nalka.Tools.Unity.DraggableBase.OnDrag(UnityEngine.EventSystems.PointerEventData)">
+            <summary>
+            Raised by unity, call base.OnDrag(eventData); if you override this method
+            </summary>
+            <param name="eventData">Provided by unity</param>
+        </member>
+        <member name="M:Nalka.Tools.Unity.DraggableBase.OnPointerUp(UnityEngine.EventSystems.PointerEventData)">
+            <summary>
+            Raised by unity, call base.OnPointerUp(eventData); if you override this method
+            </summary>
+            <param name="eventData">Provided by unity</param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.DraggableHoldingEventArgs`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="DraggableT">Type of the object being held</typeparam>
+        </member>
+        <member name="P:Nalka.Tools.Unity.DraggableHoldingEventArgs`1.HoldingObject">
+            <summary>
+            The draggable object being held
+            </summary>
+        </member>
+        <member name="T:Nalka.Tools.Unity.HoldingObjectEventHandler">
+            <summary>
+            Happens every time a draggable object is moved while being held
+            </summary>
+            <param name="e">Event data associated to the event</param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.DraggablePickedEventArgs`1">
+            <summary>
+            Provides event data for <see cref="T:Nalka.Tools.Unity.ObjectPickedEventHandler"/>
+            </summary>
+            <typeparam name="DraggableT">The type of the object being picked</typeparam>
+        </member>
+        <member name="P:Nalka.Tools.Unity.DraggablePickedEventArgs`1.PickedObject">
+            <summary>
+            The draggable object being picked
+            </summary>
+        </member>
+        <member name="T:Nalka.Tools.Unity.ObjectPickedEventHandler">
+            <summary>
+            Happens when a draggable object is picked
+            </summary>
+            <param name="e">The event data associated to the event</param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.DraggableReleasedEventArgs`1">
+            <summary>
+            Provides event data for <see cref="T:Nalka.Tools.Unity.ObjectReleasedEventHandler"/>
+            </summary>
+            <typeparam name="DraggableT">Type of the object being dragged</typeparam>
+        </member>
+        <member name="P:Nalka.Tools.Unity.DraggableReleasedEventArgs`1.ReleasedObject">
+            <summary>
+            The object that was released
+            </summary>
+        </member>
+        <member name="T:Nalka.Tools.Unity.ObjectReleasedEventHandler">
+            <summary>
+            Happens when a draggable object is released
+            </summary>
+            <param name="e">The event data associated to the event</param>
+        </member>
         <member name="T:Nalka.Tools.Unity.InstantiatingObjectEventArgs`1">
             <summary>
             Provides event data when an <see cref="T:Nalka.Tools.Unity.InstantiatingObjectEventHandler"/> is raised
@@ -266,6 +398,40 @@
             Name of the file that instantiated the <see cref="T:UnityEngine.Object"/>
             </summary>
         </member>
+        <member name="T:Nalka.Tools.Unity.ItemDroppedEventArgs`1">
+            <summary>
+            Provides event data for <see cref="T:Nalka.Tools.Unity.ItemDroppedEventHandler"/>
+            </summary>
+            <typeparam name="DraggableT">The type of the item being dragged</typeparam>
+        </member>
+        <member name="P:Nalka.Tools.Unity.ItemDroppedEventArgs`1.ItemDropped">
+            <summary>
+            The draggalbe object that was dropped in the container
+            </summary>
+        </member>
+        <member name="T:Nalka.Tools.Unity.ItemDroppedEventHandler">
+            <summary>
+            Happens when an item is dropped in the container
+            </summary>
+            <param name="e">Event data associated to the event</param>
+        </member>
+        <member name="T:Nalka.Tools.Unity.ItemRemovedEventArgs`1">
+            <summary>
+            Provides event data for <see cref="T:Nalka.Tools.Unity.ItemRemovedEventHandler"/>
+            </summary>
+            <typeparam name="DraggableT"></typeparam>
+        </member>
+        <member name="P:Nalka.Tools.Unity.ItemRemovedEventArgs`1.RemovedItem">
+            <summary>
+            The item that was removed from the container
+            </summary>
+        </member>
+        <member name="T:Nalka.Tools.Unity.ItemRemovedEventHandler">
+            <summary>
+            Happens when an item is removed from the container
+            </summary>
+            <param name="e"></param>
+        </member>
         <member name="T:Nalka.Tools.Unity.ObjectDestroyedEventArgs`1">
             <summary>
             Provides event data for handlers added to <see cref="T:Nalka.Tools.Unity.Destroyer.Destroyed"/>
@@ -277,6 +443,12 @@
             Provides event data for handlers added to <see cref="T:Nalka.Tools.Unity.Destroyer.Destroying"/>
             </summary>
             <typeparam name="DestroyedT">Type of the destroyed <see cref="T:UnityEngine.Object"/></typeparam>
+        </member>
+        <member name="T:Nalka.Tools.Unity.ObjectInstantiatedEventHandler">
+            <summary>
+            Happens after an object was instantiated by the <see cref="T:Nalka.Tools.Unity.Instantiater"/>
+            </summary>
+            <param name="e"></param>
         </member>
     </members>
 </doc>

@@ -6,32 +6,14 @@ using UnityEngine.EventSystems;
 
 public class TestContainer : ContainerBase<DraggableBase>
 {
-    public override DraggableBase ContainedObject
+    protected void Start()
     {
-        get => base.ContainedObject;
-        set => base.ContainedObject = value;
+        ItemDropped += e => Debug.Log($"{e.ItemDropped.name} was dropped into {name}");
+        ItemRemoved += e => Debug.Log($"{e.RemovedItem.name} was removed from {name}");
     }
 
-    protected override void Start()
+    protected void Update()
     {
-        base.ItemDropped += TestContainer_ItemDropped;
-        base.ItemRemoved += TestContainer_ItemRemoved;
-        base.Start();
-    }
-
-    private void TestContainer_ItemRemoved(ItemRemovedEventArgs<ContainerBase<DraggableBase>> e)
-    {
-        Debug.Log($"Aurevoir");
-    }
-
-    private void TestContainer_ItemDropped(ItemDroppedEventArgs<ContainerBase<DraggableBase>> e)
-    {
-        Debug.Log($"Salut");
-    }
-
-    protected override void Update()
-    {
-        base.Update();
     }
 
     public override void OnDrop(PointerEventData eventData)

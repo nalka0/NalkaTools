@@ -8,14 +8,16 @@ using UnityEngine.EventSystems;
 
 public class TestDraggable : DraggableBase
 {
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
+        Picked += e => Debug.Log($"{e.PickedObject.name} was picked");
+        Holding += e => Debug.Log($"{e.HoldingObject.name} is being held");
+        Released += e => Debug.Log($"{e.ReleasedObject.name} was released");
     }
-    
-    protected override void Update()
+
+    protected void Update()
     {
-        base.Update();
+
     }
 
     public override void OnPointerDown(PointerEventData eventData)
