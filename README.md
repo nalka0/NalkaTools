@@ -4,7 +4,7 @@
 
 * We have a discord server where everyone can talk and everything is explained : https://discord.gg/xHdn68E
 
-* You can also add me on discord nalka#8763 !
+* You can also add me on discord : nalka#8763 !
 
 * If you have any feature request/improvement idea don't hesitate to create an issue or send it on discord.
 
