@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Container : ContainerBase<Test>
+public class Container : ContainerBase<Draggable>
 {
     private void Start()
     {
-        this.ItemRemovedHandlers.Add(MyItemRemovedHandler);
-        this.ItemDroppedHandlers.Add(MyItemDroppedHandler);
+        ItemRemovedHandlers.Add(MyItemRemovedHandler);
+        ItemDroppedHandlers.Add(MyItemDroppedHandler);
     }
-    private void MyItemDroppedHandler(ItemDroppedEventArgs<Test> e)
+    private void MyItemDroppedHandler(ItemDroppedEventArgs<Draggable> e)
     {
-        Debug.Log($"{e.ContainedItem.name} was dropped into {this.name}");
+        Debug.Log($"{e.ContainedItem.name} was dropped into {name}");
     }
-    private void MyItemRemovedHandler(ItemRemovedEventArgs<Test> e)
+    private void MyItemRemovedHandler(ItemRemovedEventArgs<Draggable> e)
     {
-        Debug.Log($"{e.ContainedItem.name} was removed from {this.name}");
+        Debug.Log($"{e.ContainedItem.name} was removed from {name}");
     }
 }

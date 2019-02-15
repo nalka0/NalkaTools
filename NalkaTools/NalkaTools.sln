@@ -1,9 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NalkaTools", "NalkaTools\NalkaTools.csproj", "{84BFE3FA-96A7-4013-83AF-1FC150000C66}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp", "NalkaTools\CSharp.csproj", "{84BFE3FA-96A7-4013-83AF-1FC150000C66}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeAnalysis", "NalkaToolsAnaylzer\NalkaToolsAnaylzer\CodeAnalysis.csproj", "{B95236E3-B63C-4813-836A-2A0C144DD18B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NalkaToolsAnaylzer.Vsix", "NalkaToolsAnaylzer\NalkaToolsAnaylzer.Vsix\NalkaToolsAnaylzer.Vsix.csproj", "{DC260B56-5B37-4626-96B7-D7FEAC6C85F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.Tests", "Nalka.Tools.Utils.Tests\CSharp.Tests.csproj", "{6DD9837C-0E99-4E91-BA92-964626FDACE0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{90F119EC-7B0C-4F2E-849F-2AE593EA960A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DA9601A1-BE36-43D3-BEA1-E574497C457F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{20481BAE-C1EF-4BB9-8D13-0D9AB8422396}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BFB17F38-15C1-4D4D-A1F0-EA196D83EE79}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity", "Unity\Unity.csproj", "{E107BA06-5AD0-4F3B-98FA-DD34137CE056}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF", "WPF\WPF.csproj", "{0E298A58-BD89-4F36-B39B-F6B19C8CD97F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analysers", "Analysers", "{4D1A6765-9731-4CF4-B0F1-089C5048A940}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.Demo", "WPF.Demo\WPF.Demo.csproj", "{3A2B28EA-CE6C-431F-8D38-9C01F0165805}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +40,41 @@ Global
 		{84BFE3FA-96A7-4013-83AF-1FC150000C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84BFE3FA-96A7-4013-83AF-1FC150000C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84BFE3FA-96A7-4013-83AF-1FC150000C66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B95236E3-B63C-4813-836A-2A0C144DD18B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B95236E3-B63C-4813-836A-2A0C144DD18B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B95236E3-B63C-4813-836A-2A0C144DD18B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B95236E3-B63C-4813-836A-2A0C144DD18B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC260B56-5B37-4626-96B7-D7FEAC6C85F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC260B56-5B37-4626-96B7-D7FEAC6C85F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC260B56-5B37-4626-96B7-D7FEAC6C85F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC260B56-5B37-4626-96B7-D7FEAC6C85F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DD9837C-0E99-4E91-BA92-964626FDACE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DD9837C-0E99-4E91-BA92-964626FDACE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DD9837C-0E99-4E91-BA92-964626FDACE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DD9837C-0E99-4E91-BA92-964626FDACE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E107BA06-5AD0-4F3B-98FA-DD34137CE056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E107BA06-5AD0-4F3B-98FA-DD34137CE056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E107BA06-5AD0-4F3B-98FA-DD34137CE056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E107BA06-5AD0-4F3B-98FA-DD34137CE056}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E298A58-BD89-4F36-B39B-F6B19C8CD97F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E298A58-BD89-4F36-B39B-F6B19C8CD97F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E298A58-BD89-4F36-B39B-F6B19C8CD97F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E298A58-BD89-4F36-B39B-F6B19C8CD97F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A2B28EA-CE6C-431F-8D38-9C01F0165805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A2B28EA-CE6C-431F-8D38-9C01F0165805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A2B28EA-CE6C-431F-8D38-9C01F0165805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A2B28EA-CE6C-431F-8D38-9C01F0165805}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{84BFE3FA-96A7-4013-83AF-1FC150000C66} = {90F119EC-7B0C-4F2E-849F-2AE593EA960A}
+		{B95236E3-B63C-4813-836A-2A0C144DD18B} = {4D1A6765-9731-4CF4-B0F1-089C5048A940}
+		{DC260B56-5B37-4626-96B7-D7FEAC6C85F9} = {20481BAE-C1EF-4BB9-8D13-0D9AB8422396}
+		{6DD9837C-0E99-4E91-BA92-964626FDACE0} = {DA9601A1-BE36-43D3-BEA1-E574497C457F}
+		{E107BA06-5AD0-4F3B-98FA-DD34137CE056} = {90F119EC-7B0C-4F2E-849F-2AE593EA960A}
+		{0E298A58-BD89-4F36-B39B-F6B19C8CD97F} = {90F119EC-7B0C-4F2E-849F-2AE593EA960A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C393CC10-F645-46F2-9D26-D974603B987C}
